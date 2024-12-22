@@ -16,7 +16,6 @@ class AuthService {
         //создаю сессию для пользователя
         const lastActiveDate = new Date(decoded.iat!*1000)
         const deviceId = decoded.deviceId
-
         const title = userAgent || 'UNKNOWN'
 
         await SessionService.createSession({ip, title, lastActiveDate, deviceId, userId:user._id.toString()})
