@@ -11,7 +11,6 @@ export class QueryCommentRepository {
         if (!comment) {
             return null
         }
-
         let likeStatus = LikeStatusEnum.NONE
         if(userId){
             const  status  = await LikeModel.findOne({commentId:id, userId:userId})
