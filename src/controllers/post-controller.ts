@@ -12,6 +12,7 @@ import {ObjectId} from "mongodb";
 import {CreateNewCommentType} from "../types/comment/input-comment-type";
 import {CommentOutputType} from "../types/comment/output-comment-type";
 import {queryCommentRepo} from "../repositories/query-comment-repository";
+import {PostModel} from "../db/posts-model";
 
 export class PostController {
 
@@ -118,4 +119,30 @@ export class PostController {
             res.sendStatus(204)
         }
     }
+
+    async updateLikeStatus(req: Request, res: Response) {
+        {
+            const id = req.params.id
+            const {likeStatus} = req.body
+            const userId = req.userDto._id.toString()
+
+            if (!['None', 'Like', 'Dislike'].includes(likeStatus)) {
+                return res.status(400).send({errorsMessages: [{message: 'Invalid like status', field: 'likeStatus'}]})
+            }
+
+            try {
+                const postsExists = await PostModel.findById(id)
+                if (!postsExists) {
+                    return res.status(404).send({errorMessages: [{message: 'Post not found', field: 'postId'}]})
+                }
+
+                await this.postService.updateLikeStatus(id, userId, likeStatus)
+                return res.sendStatus(204)
+            } catch (error) {
+                console.error('Error updating like status:', error);
+                return res.status(500).send({error: 'Something went wrong'});
+            }
+        }
+    }
+
 }

@@ -1,10 +1,11 @@
 import {CreateNewPostType, UpdatePostType} from "../types/posts/input";
 import {PostMongoDbType, PostOutputType} from "../types/posts/output";
 import {queryBlogRepo} from "../repositories/query-blog-repository";
-import {PostDb} from "../db/posts-model";
+import {PostDb, PostModel} from "../db/posts-model";
 import {ObjectId} from "mongodb";
 import {queryPostRepo} from "../repositories/query-post-repository";
 import {PostRepository} from "../repositories/post-repository";
+import {LikeModel, LikeStatusEnum} from "../db/likes-model";
 
 export class PostMapper{
     static toDto(post:PostMongoDbType):PostOutputType{
@@ -59,6 +60,37 @@ export class PostService{
         }
     }
 
+    async updateLikeStatus(postId: string, userId: string, likeStatus: LikeStatusEnum): Promise<void> {
+        const existingLike = await LikeModel.findOne({ postId, userId });
+
+        if (likeStatus === LikeStatusEnum.NONE) {
+            if (existingLike) {
+                await existingLike.deleteOne();
+            }
+        } else {
+            if (existingLike) {
+                if (existingLike.status !== likeStatus) {
+                    await existingLike.updateOne({ status: likeStatus });
+                }
+            } else {
+                await PostModel.create({ postId, userId, status: likeStatus, createdAt: new Date() });
+            }
+        }
+        await updatePostLikeCounts(postId);
+    }
+
 }
+
+const updatePostLikeCounts = async (postId:string)=>{
+    const likesCount  = await LikeModel.countDocuments({postId, status:LikeStatusEnum.LIKE})
+    const dislikesCount  = await LikeModel.countDocuments({postId, status:LikeStatusEnum.DISLIKE})
+
+    // обновляем поля likesInfo
+    await PostModel.findByIdAndUpdate(postId,{
+        'likesInfo.likesCount':likesCount,
+        'likesInfo.dislikesCount':dislikesCount,
+    })
+}
+
 
 

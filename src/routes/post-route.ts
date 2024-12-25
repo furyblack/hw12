@@ -20,6 +20,8 @@ postRoute.post("/:postId/comments", authMiddlewareBearer, commentForPostValidati
 
 postRoute.put('/:id', authMiddleware, postValidation(), postController.updatePost.bind(postController))
 
+postRoute.put('/:id/like-status', authMiddlewareBearer, postController.updateLikeStatus.bind(postController))
+
 postRoute.delete('/:id', authMiddleware, postController.deletePost.bind(postController))
 
 
