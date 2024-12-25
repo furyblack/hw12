@@ -5,10 +5,10 @@ import {PostDb, PostModel} from "../db/posts-model";
 import {ObjectId} from "mongodb";
 import {queryPostRepo} from "../repositories/query-post-repository";
 import {PostRepository} from "../repositories/post-repository";
-import {LikeModel, LikeStatusEnum} from "../db/likes-model";
+import {LikeModelPosts, LikeStatusEnum} from "../db/likes-model";
 
 export class PostMapper{
-    static toDto(post:PostMongoDbType):PostOutputType{
+    static toDto(post:PostMongoDbType, likeStatus:LikeStatusEnum=LikeStatusEnum.NONE):PostOutputType{
         return {
             id: post._id.toString(),
             title: post.title,
@@ -16,7 +16,14 @@ export class PostMapper{
             content: post.content,
             blogId: post.blogId,
             blogName: post.blogName,
-            createdAt: post.createdAt.toISOString()
+            createdAt: post.createdAt.toISOString(),
+            extendedLikesInfo:{
+                likesCount: post.extendedLikesInfo.likesCount,
+                dislikesCount: post.extendedLikesInfo.dislikesCount,
+                myStatus: likeStatus,
+                newestLikes:[]
+            }
+
         }
     }
 }
@@ -61,7 +68,7 @@ export class PostService{
     }
 
     async updateLikeStatus(postId: string, userId: string, likeStatus: LikeStatusEnum): Promise<void> {
-        const existingLike = await LikeModel.findOne({ postId, userId });
+        const existingLike = await LikeModelPosts.findOne({ postId, userId });
 
         if (likeStatus === LikeStatusEnum.NONE) {
             if (existingLike) {
@@ -82,8 +89,8 @@ export class PostService{
 }
 
 const updatePostLikeCounts = async (postId:string)=>{
-    const likesCount  = await LikeModel.countDocuments({postId, status:LikeStatusEnum.LIKE})
-    const dislikesCount  = await LikeModel.countDocuments({postId, status:LikeStatusEnum.DISLIKE})
+    const likesCount  = await LikeModelPosts.countDocuments({postId, status:LikeStatusEnum.LIKE})
+    const dislikesCount  = await LikeModelPosts.countDocuments({postId, status:LikeStatusEnum.DISLIKE})
 
     // обновляем поля likesInfo
     await PostModel.findByIdAndUpdate(postId,{

@@ -1,4 +1,5 @@
 import {ObjectId} from "mongodb";
+import {LikeStatusEnum} from "../../db/likes-model";
 
 export type PostOutputType = {
     "id": string,
@@ -7,7 +8,13 @@ export type PostOutputType = {
     "content": string,
     "blogId": string,
     "blogName": string,
-    "createdAt": string
+    "createdAt": string,
+    extendedLikesInfo: {
+        likesCount: number,
+        dislikesCount: number,
+        myStatus:LikeStatusEnum,
+        newestLikes: []
+    }
 }
 
 export type PostMongoDbType =  {
@@ -17,7 +24,14 @@ export type PostMongoDbType =  {
     "content": string,
     "blogId": string,
     "blogName": string,
-    "createdAt": Date
+    "createdAt": Date,
+    extendedLikesInfo: {
+        likesCount: number,
+        dislikesCount: number,
+        // myStatus:LikeStatusEnum,
+        newestLikes: []
+    }
+
 }
 export type PostCreateType =  {
     "_id": ObjectId,

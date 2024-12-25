@@ -27,7 +27,7 @@ export class QueryPostRepository {
             page: pageNumber,
             pageSize: pageSize,
             totalCount,
-            items: post.map(p => PostMapper.toDto(p))
+            items: post.map((p) => PostMapper.toDto(p))
         };
     }
 
@@ -98,12 +98,19 @@ export class QueryPostRepository {
     }
 
 
-     async getById(id: string): Promise<PostOutputType | null> {
+     async getById(id: string, userId?:string): Promise<PostOutputType | null> {
         const post: PostMongoDbType | null = await PostModel.findOne({ _id: new ObjectId(id) });
         if (!post) {
             return null;
         }
-        return PostMapper.toDto(post);
+         let likeStatus = LikeStatusEnum.NONE
+         if(userId){
+             const  status  = await LikeModel.findOne({commentId:id, userId:userId})
+             if(status){
+                 likeStatus = status.status
+             }
+         }
+        return PostMapper.toDto(post, likeStatus);
     }
 }
 

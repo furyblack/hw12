@@ -2,10 +2,11 @@ import {UpdatePostType} from "../types/posts/input";
 import {PostMongoDbType, PostOutputType} from "../types/posts/output";
 import {ObjectId, WithId} from "mongodb";
 import {PostDb, PostModel} from "../db/posts-model";
+import {LikeStatusEnum} from "../db/likes-model";
 
 
 export class PostMapper{
-    static toDto(post:PostMongoDbType):PostOutputType{
+    static toDto(post:PostMongoDbType, likeStatus:LikeStatusEnum = LikeStatusEnum.NONE):PostOutputType{
         return {
             id: post._id.toString(),
             title: post.title,
@@ -13,7 +14,13 @@ export class PostMapper{
             content: post.content,
             blogId: post.blogId,
             blogName: post.blogName,
-            createdAt: post.createdAt.toISOString()
+            createdAt: post.createdAt.toISOString(),
+            extendedLikesInfo: {
+                likesCount: post.extendedLikesInfo.likesCount,
+                dislikesCount: post.extendedLikesInfo.dislikesCount,
+                myStatus:likeStatus,
+                newestLikes: []
+            }
         }
     }
 }

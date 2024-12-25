@@ -20,3 +20,21 @@ export type likeType = {
     createdAt:Date
 }
 export const LikeModel  = mongoose.model<likeType>('CommentsLikes', likeSchema )
+
+
+//likes for posts
+export const likeSchemaPost  = new mongoose.Schema({
+    postId: {type: mongoose.Schema.Types.ObjectId, ref:'posts', required:true},
+    userId: {type:String, required:true},
+    status:{type:String, enum: LikeStatusEnum, required:true},
+    createdAt:{type:Date, required:true}
+})
+
+export type likeTypeForPosts = {
+    postId: mongoose.Schema.Types.ObjectId,
+    userId: String,
+    status:LikeStatusEnum,
+    createdAt:Date
+}
+
+export const LikeModelPosts= mongoose.model<likeTypeForPosts>('PostsLikes', likeSchemaPost )
