@@ -31,7 +31,6 @@ export type PostMongoDbType =  {
         // myStatus:LikeStatusEnum,
         newestLikes: []
     }
-
 }
 export type PostCreateType =  {
     "_id": ObjectId,
@@ -41,7 +40,6 @@ export type PostCreateType =  {
     "blogId": string,
     "blogName": string,
 }
-
 
 export type postSortData = {
     pageSize: number,

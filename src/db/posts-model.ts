@@ -3,7 +3,6 @@ import {PostCreateType, PostMongoDbType} from "../types/posts/output";
 import {ObjectId} from "mongodb";
 
 
-
 //СХЕМА И МОДЕЛЬ ПОСТОВ
 export const postSchema = new mongoose.Schema({
     title: {type: String, required: true},
@@ -18,25 +17,6 @@ export const postSchema = new mongoose.Schema({
     }
 })
 export const PostModel = mongoose.model<PostMongoDbType>('posts', postSchema)
-
-// class PostMongoDbType {
-//     constructor(
-//         public _id: ObjectId,
-//         public title: string,
-//         public shortDescription: string,
-//         public content: string,
-//         public blogId: string,
-//         public blogName: string,
-//         public createdAt: Date,
-//         public likesInfo: {
-//             likesCount: number,
-//             dislikesCount: number,
-//             newestLikes: []
-//     }
-// ) {
-// }
-// }
-
 
 export class PostDb {
     public _id: ObjectId
