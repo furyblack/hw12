@@ -71,16 +71,21 @@ export class PostService{
         const existingLike = await LikeModelPosts.findOne({ postId, userId });
 
         if (likeStatus === LikeStatusEnum.NONE) {
+            console.log('1')
             if (existingLike) {
                 await existingLike.deleteOne();
             }
         } else {
             if (existingLike) {
+                console.log('2')
                 if (existingLike.status !== likeStatus) {
+                    console.log('3')
                     await existingLike.updateOne({ status: likeStatus });
                 }
             } else {
-                await PostModel.create({ postId, userId, status: likeStatus, createdAt: new Date() });
+                console.log('4')
+                const  likeModel =  await LikeModelPosts.create({ postId, userId, status: likeStatus, createdAt: new Date() });
+                await likeModel.save()
             }
         }
         await updatePostLikeCounts(postId);
@@ -92,7 +97,18 @@ const updatePostLikeCounts = async (postId:string)=>{
     const likesCount  = await LikeModelPosts.countDocuments({postId, status:LikeStatusEnum.LIKE})
     const dislikesCount  = await LikeModelPosts.countDocuments({postId, status:LikeStatusEnum.DISLIKE})
 
-    // обновляем поля likesInfo
+    console.log('likeCount', likesCount)
+    console.log('dislikesCount', dislikesCount)
+
+    const post = await PostModel.findById(postId);
+    if (!post) {
+        throw new Error(`Post with id ${postId} not found`);
+    }
+        post.extendedLikesInfo.likesCount= likesCount
+        post.extendedLikesInfo.dislikesCount= dislikesCount
+
+
+             //обновляем поля likesInfo
     await PostModel.findByIdAndUpdate(postId,{
         'extendedLikesInfo.likesCount':likesCount,
         'extendedLikesInfo.dislikesCount':dislikesCount,

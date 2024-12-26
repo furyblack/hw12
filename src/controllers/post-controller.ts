@@ -126,11 +126,16 @@ export class PostController {
             const {likeStatus} = req.body
             const userId = req.userDto._id.toString()
 
+
+
             if (!['None', 'Like', 'Dislike'].includes(likeStatus)) {
                 return res.status(400).send({errorsMessages: [{message: 'Invalid like status', field: 'likeStatus'}]})
             }
 
-            try {
+            console.log('controller:', req.params)
+            console.log('controller:', id)
+
+            // try {
                 const postsExists = await PostModel.findById(id)
                 if (!postsExists) {
                     return res.status(404).send({errorMessages: [{message: 'Post not found', field: 'postId'}]})
@@ -138,10 +143,10 @@ export class PostController {
 
                 await this.postService.updateLikeStatus(id, userId, likeStatus)
                 return res.sendStatus(204)
-            } catch (error) {
-                console.error('Error updating like status:', error);
-                return res.status(500).send({error: 'Something went wrong'});
-            }
+            // // } catch (error) {
+            //     console.error('Error updating like status:', error);
+            //     return res.status(500).send({error: 'Something went wrong'});
+            // }
         }
     }
 

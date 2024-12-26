@@ -121,14 +121,16 @@ describe('likes to posts', () => {
             accessToken = loginResponse.body.accessToken;
         });
         it('should like the post', async () => {
+           console.log('test postId',post.id)
+
             await request(app)
-                .put(`/posts/${postId}/like-status`)
+                .put(`/posts/${post.id}/like-status`)
                 .set('Authorization', `Bearer ${accessToken}`)
                 .send({likeStatus: 'Like'})
                 .expect(204)
 
             const getPostLikeResponse = await request(app)
-                .get(`/posts/${postId}`)
+                .get(`/posts/${post.id}`)
                 .set('Authorization', `Bearer ${accessToken}`)
                 .expect(200)
 
