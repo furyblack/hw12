@@ -5,7 +5,7 @@ import { ObjectId, SortDirection } from "mongodb";
 import { CommentOutputType } from "../types/comment/output-comment-type";
 import {PostModel} from "../db/posts-model";
 import {CommentModel} from "../db/comment-model";
-import {LikeModel, LikeStatusEnum} from "../db/likes-model";
+import {LikeModel, LikeModelPosts, LikeStatusEnum} from "../db/likes-model";
 
 export class QueryPostRepository {
 
@@ -98,14 +98,15 @@ export class QueryPostRepository {
     }
 
 
+    //get post by id
      async getById(id: string, userId?:string): Promise<PostOutputType | null> {
-        const post: PostMongoDbType | null = await PostModel.findOne({ _id: new ObjectId(id) });
+        const post: PostMongoDbType | null = await PostModel.findOne({ _id: new ObjectId(id), userId });
         if (!post) {
             return null;
         }
          let likeStatus = LikeStatusEnum.NONE
          if(userId){
-             const  status  = await LikeModel.findOne({commentId:id, userId:userId})
+             const  status  = await LikeModelPosts.findOne({commentId:id, userId:userId})
              if(status){
                  likeStatus = status.status
              }

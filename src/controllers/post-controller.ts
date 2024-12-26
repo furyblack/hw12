@@ -28,6 +28,9 @@ export class PostController {
 
     async getPostById(req: Request, res: Response) {
         const postId = await queryPostRepo.getById(req.params.id)
+        // const userId = req.userDto? req.userDto._id.toString():null
+        //
+
         if (postId) {
             res.status(200).send(postId)
         } else {
@@ -135,7 +138,7 @@ export class PostController {
             console.log('controller:', req.params)
             console.log('controller:', id)
 
-            // try {
+             try {
                 const postsExists = await PostModel.findById(id)
                 if (!postsExists) {
                     return res.status(404).send({errorMessages: [{message: 'Post not found', field: 'postId'}]})
@@ -143,10 +146,10 @@ export class PostController {
 
                 await this.postService.updateLikeStatus(id, userId, likeStatus)
                 return res.sendStatus(204)
-            // // } catch (error) {
-            //     console.error('Error updating like status:', error);
-            //     return res.status(500).send({error: 'Something went wrong'});
-            // }
+             } catch (error) {
+                console.error('Error updating like status:', error);
+                return res.status(500).send({error: 'Something went wrong'});
+            }
         }
     }
 
