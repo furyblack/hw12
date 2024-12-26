@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import {CreateCommentServiceType} from "../domain/comment-service";
 
 
+
 //СХЕМА И МОДЕЛЬ КОММЕНТОВ
 export const commentSchema = new mongoose.Schema({
     postId:{type: String, required: true},

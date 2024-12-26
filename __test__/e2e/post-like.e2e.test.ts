@@ -5,6 +5,8 @@ import {PostOutputType} from "../../src/types/posts/output";
 import {BlogOutputType} from "../../src/types/blogs/output";
 
 
+require('dotenv').config();
+
 const blogCreateData = {
     name: "test",
     description: "test",
@@ -126,16 +128,14 @@ describe('likes to posts', () => {
                 .expect(204)
 
             const getPostLikeResponse = await request(app)
-                .get(`/comments/${postId}`)
+                .get(`/posts/${postId}`)
                 .set('Authorization', `Bearer ${accessToken}`)
                 .expect(200)
 
-
-            expect(getPostLikeResponse.body.likesInfo.likesCount).toBe(1)
-            expect(getPostLikeResponse.body.likesInfo.dislikesCount).toBe(0)
-            expect(getPostLikeResponse.body.likesInfo.myStatus).toBe('Like')
+            expect(getPostLikeResponse.body.extendedLikesInfo.likesCount).toBe(1)
+            expect(getPostLikeResponse.body.extendedLikesInfo.dislikesCount).toBe(0)
+            expect(getPostLikeResponse.body.extendedLikesInfo.myStatus).toBe('Like')
         })
-
 
     }
 )

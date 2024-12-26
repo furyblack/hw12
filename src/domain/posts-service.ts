@@ -94,8 +94,8 @@ const updatePostLikeCounts = async (postId:string)=>{
 
     // обновляем поля likesInfo
     await PostModel.findByIdAndUpdate(postId,{
-        'likesInfo.likesCount':likesCount,
-        'likesInfo.dislikesCount':dislikesCount,
+        'extendedLikesInfo.likesCount':likesCount,
+        'extendedLikesInfo.dislikesCount':dislikesCount,
     })
 }
 

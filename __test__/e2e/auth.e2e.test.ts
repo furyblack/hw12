@@ -9,6 +9,8 @@ const userCreateData = {
     email: "miha25646@gmail.com"
 };
 
+require('dotenv').config();
+
 let user;
 let firstRefreshToken: any;
 

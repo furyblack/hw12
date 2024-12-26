@@ -4,7 +4,7 @@ import {app} from "../../src/settings";
 import {PostOutputType} from "../../src/types/posts/output";
 import {BlogOutputType} from "../../src/types/blogs/output";
 
-
+require('dotenv').config();
 const userCreateData = {
     login:"testUser",
     password:"testPassword",
@@ -71,11 +71,13 @@ describe('/comments', ()=> {
     //логинимся и получаем refresh token
     it('should login user first time', async () => {
 
+
         const loginResponse = await request(app)
 
             .post('/auth/login')
             .send({loginOrEmail: userCreateData.login, password: userCreateData.password})
             .expect(200);
+        console.log('MISTAKE')
         firstRefreshToken = loginResponse.headers['set-cookie'][0].split(';')[0].split('=')[1];
         console.log('LOGIN', loginResponse.body)
         const sessionsResponse1 = await request(app)
