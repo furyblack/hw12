@@ -6,6 +6,8 @@ import {ObjectId} from "mongodb";
 import {queryPostRepo} from "../repositories/query-post-repository";
 import {PostRepository} from "../repositories/post-repository";
 import {LikeModelPosts, LikeStatusEnum} from "../db/likes-model";
+import {UserMapper} from "../repositories/query-user-repository";
+import {UserModel} from "../db/user-model";
 
 export class PostMapper{
     static toDto(post:PostMongoDbType, likeStatus:LikeStatusEnum=LikeStatusEnum.NONE):PostOutputType{
@@ -100,12 +102,14 @@ const updatePostLikeCounts = async (postId:string)=>{
     console.log('likeCount', likesCount)
     console.log('dislikesCount', dislikesCount)
 
+
     const post = await PostModel.findById(postId);
     if (!post) {
         throw new Error(`Post with id ${postId} not found`);
     }
         post.extendedLikesInfo.likesCount= likesCount
         post.extendedLikesInfo.dislikesCount= dislikesCount
+
 
 
              //обновляем поля likesInfo

@@ -13,6 +13,7 @@ import {CreateNewCommentType} from "../types/comment/input-comment-type";
 import {CommentOutputType} from "../types/comment/output-comment-type";
 import {queryCommentRepo} from "../repositories/query-comment-repository";
 import {PostModel} from "../db/posts-model";
+import {LikeModel, LikeModelPosts} from "../db/likes-model";
 
 export class PostController {
 
@@ -27,15 +28,48 @@ export class PostController {
     }
 
     async getPostById(req: Request, res: Response) {
-        const postId = await queryPostRepo.getById(req.params.id)
-        // const userId = req.userDto? req.userDto._id.toString():null
-        //
+        // const postId = await queryPostRepo.getById(req.params.id);
+        const postId = req.params.id
+        const userId = req.userDto ? req.userDto._id.toString() : null;
+        console.log('uuserID on c',userId)
 
-        if (postId) {
-            res.status(200).send(postId)
-        } else {
-            res.sendStatus(404)
+        const post = await queryPostRepo.getById(postId)
+        if (!post) {
+            return res.sendStatus(404);
         }
+
+        let myStatus = 'None';
+        if (userId) {
+            const userLike = await LikeModelPosts.findOne({postId, userId});
+            if (userLike) {
+                myStatus = userLike.status;
+            }
+        }
+        // if (postId) {
+        //     res.status(200).send(postId)
+        // } else {
+        //     res.sendStatus(404)
+        // }
+
+        const responsePost = {
+            id: post.id,
+            title: post.title,
+            shortDescription: post.shortDescription,
+            content: post.content,
+            blogId: post.blogId,
+            blogName: post.blogName,
+            createdAt: post.createdAt,  //БЫЛО TO iSO STRING
+            extendedLikesInfo: {
+                likesCount: post.extendedLikesInfo.likesCount,
+                dislikesCount: post.extendedLikesInfo.dislikesCount,
+                myStatus: myStatus,
+                newestLikes: []
+            }
+
+        }
+        res.status(200).send(responsePost);
+        return
+
     }
 
     async getCommentsForPost(req: RequestWithQueryAndParams<{
@@ -128,15 +162,10 @@ export class PostController {
             const id = req.params.id
             const {likeStatus} = req.body
             const userId = req.userDto._id.toString()
-
-
-
             if (!['None', 'Like', 'Dislike'].includes(likeStatus)) {
                 return res.status(400).send({errorsMessages: [{message: 'Invalid like status', field: 'likeStatus'}]})
             }
 
-            console.log('controller:', req.params)
-            console.log('controller:', id)
 
              try {
                 const postsExists = await PostModel.findById(id)

@@ -14,7 +14,13 @@ export const postSchema = new mongoose.Schema({
     extendedLikesInfo:{
         likesCount: {type: Number, required: true},
         dislikesCount: {type: Number, required: true},
-        newestLikes: { type: Array, required: true, default: [] }
+        newestLikes: [
+            {
+                addedAt: { type: Date, required: true },
+                userId: { type: String, required: true },
+                login: { type: String, required: true },
+            },
+        ],
     }
 })
 export const PostModel = mongoose.model<PostMongoDbType>('posts', postSchema)

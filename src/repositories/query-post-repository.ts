@@ -100,13 +100,15 @@ export class QueryPostRepository {
 
     //get post by id
      async getById(id: string, userId?:string): Promise<PostOutputType | null> {
-        const post: PostMongoDbType | null = await PostModel.findOne({ _id: new ObjectId(id), userId });
+         console.log('id',id)
+         console.log('userId',userId)
+        const post: PostMongoDbType | null = await PostModel.findOne({ _id: new ObjectId(id) }); //, userId вырезал
         if (!post) {
             return null;
         }
          let likeStatus = LikeStatusEnum.NONE
          if(userId){
-             const  status  = await LikeModelPosts.findOne({commentId:id, userId:userId})
+             const  status  = await LikeModelPosts.findOne({postId:id, userId:userId})
              if(status){
                  likeStatus = status.status
              }

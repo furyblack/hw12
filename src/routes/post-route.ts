@@ -7,10 +7,9 @@ import {postController} from "../composition-root";
 export const postRoute = Router({})
 
 
-
 postRoute.get('/', postController.getPosts.bind(postController))
 
-postRoute.get('/:id', postController.getPostById.bind(postController))
+postRoute.get('/:id',extractUserIdFromToken, postController.getPostById.bind(postController))
 
 postRoute.get('/:postId/comments', extractUserIdFromToken, postController.getCommentsForPost.bind(postController))
 
