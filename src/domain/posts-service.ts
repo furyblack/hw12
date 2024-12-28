@@ -23,7 +23,13 @@ export class PostMapper{
                 likesCount: post.extendedLikesInfo.likesCount,
                 dislikesCount: post.extendedLikesInfo.dislikesCount,
                 myStatus: likeStatus,
-                newestLikes:[]
+                newestLikes:[
+                    {
+                        addedAt: post.extendedLikesInfo.newestLikes.addedAt,
+                        userId: { type: String, required: true },
+                        login: { type: String, required: true },
+                    },
+                ]
             }
 
         }
