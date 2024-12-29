@@ -6,8 +6,6 @@ import {ObjectId} from "mongodb";
 import {queryPostRepo} from "../repositories/query-post-repository";
 import {PostRepository} from "../repositories/post-repository";
 import {LikeModelPosts, LikeStatusEnum} from "../db/likes-model";
-import {UserMapper} from "../repositories/query-user-repository";
-import {UserModel} from "../db/user-model";
 
 export class PostMapper{
     static toDto(post:PostMongoDbType, likeStatus:LikeStatusEnum=LikeStatusEnum.NONE):PostOutputType{
@@ -24,11 +22,11 @@ export class PostMapper{
                 dislikesCount: post.extendedLikesInfo.dislikesCount,
                 myStatus: likeStatus,
                 newestLikes:[
-                    {
-                        addedAt: post.extendedLikesInfo.newestLikes.addedAt,
-                        userId: { type: String, required: true },
-                        login: { type: String, required: true },
-                    },
+                    // {
+                    //     addedAt: post.extendedLikesInfo.newestLikes.addedAt,
+                    //     userId: { type: String, required: true },
+                    //     login: { type: String, required: true },
+                    // },
                 ]
             }
 
