@@ -13,7 +13,7 @@ import {CreateNewCommentType} from "../types/comment/input-comment-type";
 import {CommentOutputType} from "../types/comment/output-comment-type";
 import {queryCommentRepo} from "../repositories/query-comment-repository";
 import {PostModel} from "../db/posts-model";
-import {LikeModel, LikeModelPosts} from "../db/likes-model";
+import {LikeModelPosts} from "../db/likes-model";
 
 export class PostController {
 
@@ -45,11 +45,6 @@ export class PostController {
                 myStatus = userLike.status;
             }
         }
-        // if (postId) {
-        //     res.status(200).send(postId)
-        // } else {
-        //     res.sendStatus(404)
-        // }
 
         const responsePost = {
             id: post.id,
