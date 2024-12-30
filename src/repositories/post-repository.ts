@@ -4,9 +4,8 @@ import {ObjectId, WithId} from "mongodb";
 import {PostDb, PostModel} from "../db/posts-model";
 import {LikeStatusEnum} from "../db/likes-model";
 
-
 export class PostMapper{
-    static toDto(post:PostMongoDbType, likeStatus:LikeStatusEnum = LikeStatusEnum.NONE):PostOutputType{
+    static toDto(post:PostMongoDbType, likeStatus:LikeStatusEnum=LikeStatusEnum.NONE):PostOutputType{
         return {
             id: post._id.toString(),
             title: post.title,
@@ -15,12 +14,13 @@ export class PostMapper{
             blogId: post.blogId,
             blogName: post.blogName,
             createdAt: post.createdAt.toISOString(),
-            extendedLikesInfo: {
+            extendedLikesInfo:{
                 likesCount: post.extendedLikesInfo.likesCount,
                 dislikesCount: post.extendedLikesInfo.dislikesCount,
-                myStatus:likeStatus,
-                newestLikes: []
+                myStatus: likeStatus,
+                newestLikes:post.extendedLikesInfo.newestLikes
             }
+
         }
     }
 }

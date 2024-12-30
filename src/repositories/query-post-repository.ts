@@ -1,11 +1,11 @@
 import { PostMongoDbType, PostOutputType, postSortData } from "../types/posts/output";
-import { PostMapper } from "../domain/posts-service";
 import { PaginationOutputType } from "../types/blogs/output";
 import { ObjectId, SortDirection } from "mongodb";
 import { CommentOutputType } from "../types/comment/output-comment-type";
 import {PostModel} from "../db/posts-model";
 import {CommentModel} from "../db/comment-model";
 import {LikeModel, LikeModelPosts, LikeStatusEnum} from "../db/likes-model";
+import {PostMapper} from "./post-repository";
 
 export class QueryPostRepository {
 

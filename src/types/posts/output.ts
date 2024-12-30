@@ -13,13 +13,13 @@ export type PostOutputType = {
         likesCount: number,
         dislikesCount: number,
         myStatus:LikeStatusEnum,
-        newestLikes: [
-            // {
-            //     addedAt: string,
-            //     userId: string,
-            //     login: string,
-            // },
-        ]
+        newestLikes:
+            {
+                addedAt: string,
+                userId: string,
+                login: string,
+            }[]
+
     }
 }
 

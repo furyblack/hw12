@@ -1,40 +1,16 @@
 import {CreateNewPostType, UpdatePostType} from "../types/posts/input";
-import {PostMongoDbType, PostOutputType} from "../types/posts/output";
+import {PostOutputType} from "../types/posts/output";
 import {queryBlogRepo} from "../repositories/query-blog-repository";
 import {PostDb, PostModel} from "../db/posts-model";
 import {ObjectId} from "mongodb";
 import {queryPostRepo} from "../repositories/query-post-repository";
 import {PostRepository} from "../repositories/post-repository";
 import {LikeModelPosts, LikeStatusEnum} from "../db/likes-model";
+import {UsersRepository} from "../repositories/users-repository";
 
-export class PostMapper{
-    static toDto(post:PostMongoDbType, likeStatus:LikeStatusEnum=LikeStatusEnum.NONE):PostOutputType{
-        return {
-            id: post._id.toString(),
-            title: post.title,
-            shortDescription: post.shortDescription,
-            content: post.content,
-            blogId: post.blogId,
-            blogName: post.blogName,
-            createdAt: post.createdAt.toISOString(),
-            extendedLikesInfo:{
-                likesCount: post.extendedLikesInfo.likesCount,
-                dislikesCount: post.extendedLikesInfo.dislikesCount,
-                myStatus: likeStatus,
-                newestLikes:[
-                    // {
-                    //     addedAt: post.extendedLikesInfo.newestLikes.addedAt,
-                    //     userId: { type: String, required: true },
-                    //     login: { type: String, required: true },
-                    // },
-                ]
-            }
 
-        }
-    }
-}
 export class PostService{
-    constructor(protected postRepo:PostRepository) {
+    constructor(protected postRepo:PostRepository, protected userRepo:UsersRepository) {
     }
 
      async createPost(postParams: CreateNewPostType): Promise<PostOutputType | null>{
@@ -65,8 +41,7 @@ export class PostService{
     }
     async deletePost(id: string): Promise<boolean> {
         try {
-            const result = await this.postRepo.deletePost(id);
-            return result; // Возвращаем результат из репозитория
+            return await this.postRepo.deletePost(id); // Возвращаем результат из репозитория
         } catch (error) {
             console.error("Error deleting post", error);
             return false; // Возвращаем false в случае ошибки
@@ -75,6 +50,8 @@ export class PostService{
 
     async updateLikeStatus(postId: string, userId: string, likeStatus: LikeStatusEnum): Promise<void> {
         const existingLike = await LikeModelPosts.findOne({ postId, userId });
+
+        const user = await this.userRepo.findUserById(userId)
 
         if (likeStatus === LikeStatusEnum.NONE) {
             console.log('1')
@@ -90,7 +67,7 @@ export class PostService{
                 }
             } else {
                 console.log('4')
-                const  likeModel =  await LikeModelPosts.create({ postId, userId, status: likeStatus, createdAt: new Date() });
+                const  likeModel =  await LikeModelPosts.create({ postId, userId, status: likeStatus, createdAt: new Date() , login:user?.accountData.userName });
                 await likeModel.save()
             }
         }
@@ -102,24 +79,30 @@ export class PostService{
 const updatePostLikeCounts = async (postId:string)=>{
     const likesCount  = await LikeModelPosts.countDocuments({postId, status:LikeStatusEnum.LIKE})
     const dislikesCount  = await LikeModelPosts.countDocuments({postId, status:LikeStatusEnum.DISLIKE})
+    const newestLikes = await LikeModelPosts.find(
+        {postId, status:LikeStatusEnum.LIKE}
+        )
+        .sort({'createdAt':-1})
+        .limit(3)
+        .lean()
 
     console.log('likeCount', likesCount)
     console.log('dislikesCount', dislikesCount)
 
-
-    const post = await PostModel.findById(postId);
-    if (!post) {
-        throw new Error(`Post with id ${postId} not found`);
-    }
-        post.extendedLikesInfo.likesCount= likesCount
-        post.extendedLikesInfo.dislikesCount= dislikesCount
-
+    const  lastTreeLikes = newestLikes.map(like=>{
+        return{
+            addedAt:like.createdAt,
+            userId: like.userId,
+            login:like.login
+        }
+    })
 
 
              //обновляем поля likesInfo
     await PostModel.findByIdAndUpdate(postId,{
         'extendedLikesInfo.likesCount':likesCount,
         'extendedLikesInfo.dislikesCount':dislikesCount,
+        'extendedLikesInfo.newestLikes': lastTreeLikes,
     })
 }
 

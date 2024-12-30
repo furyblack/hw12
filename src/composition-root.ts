@@ -20,7 +20,7 @@ const blogRepo = new BlogRepository()
 
 //Service
 export const userService = new UsersService(userRepo)
-export const postService = new PostService(postRepo)
+export const postService = new PostService(postRepo, userRepo)
 export const commentService = new CommentService(commentRepo, postRepo)
 export const blogService = new BlogsService(blogRepo)
 

@@ -52,6 +52,7 @@ const updateCommentLikeCounts = async (commentId:string)=>{
     const likesCount  = await LikeModel.countDocuments({commentId, status:LikeStatusEnum.LIKE})
     const dislikesCount  = await LikeModel.countDocuments({commentId, status:LikeStatusEnum.DISLIKE})
 
+
         // обновляем поля likesInfo
     await CommentModel.findByIdAndUpdate(commentId,{
         'likesInfo.likesCount':likesCount,

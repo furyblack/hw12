@@ -27,14 +27,16 @@ export const likeSchemaPost  = new mongoose.Schema({
     postId: {type: mongoose.Schema.Types.ObjectId, ref:'posts', required:true},
     userId: {type:String, required:true},
     status:{type:String, enum: LikeStatusEnum, required:true},
-    createdAt:{type:Date, required:true}
+    createdAt:{type:Date, required:true},
+    login:{type:String, required:true}
 })
 
 export type likeTypeForPosts = {
     postId: mongoose.Schema.Types.ObjectId,
     userId: String,
     status:LikeStatusEnum,
-    createdAt:Date
+    createdAt:Date,
+    login:String
 }
 
 export const LikeModelPosts= mongoose.model<likeTypeForPosts>('PostsLikes', likeSchemaPost )
