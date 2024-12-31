@@ -6,13 +6,13 @@ import {JwtPayload} from "../types/session/sessionType";
 import * as crypto from "crypto";
 
 const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET || 'default_refresh_token_secret';
-export const refreshTokenExpiration = 6000;  // Время жизни refresh токена
+export const refreshTokenExpiration = 6000000;  // Время жизни refresh токена
 
 export const jwtService={
 
     async  createAccessToken(user:WithId<UserAccountDBType>){
 
-        return jwt.sign({userId: user._id, noise:crypto.randomUUID()}, process.env.JWT_SECRET as string, {expiresIn: '1000s'})
+        return jwt.sign({userId: user._id, noise:crypto.randomUUID()}, process.env.JWT_SECRET as string, {expiresIn: '10000000s'})
     },
     async createRefreshToken(user: WithId<UserAccountDBType>) {
         const deviceId = randomUUID()

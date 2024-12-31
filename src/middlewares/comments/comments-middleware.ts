@@ -14,6 +14,7 @@ export const extractUserIdFromToken = async  (req: Request, res: Response, next:
     const token = req.headers.authorization.split(' ')[1];
     // Получаем ID пользователя по токену
     const userId = await jwtService.getUserIdByToken(token);
+    console.log('user if from token', userId)
     // Ищем пользователя в базе данных
     const user = await userRepo.findUserById(userId);
     if (user) {

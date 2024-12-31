@@ -13,7 +13,7 @@ import {CreateNewCommentType} from "../types/comment/input-comment-type";
 import {CommentOutputType} from "../types/comment/output-comment-type";
 import {queryCommentRepo} from "../repositories/query-comment-repository";
 import {PostModel} from "../db/posts-model";
-import {LikeModelPosts} from "../db/likes-model";
+
 
 export class PostController {
 
@@ -33,36 +33,12 @@ export class PostController {
         const userId = req.userDto ? req.userDto._id.toString() : null;
         console.log('uuserID on c',userId)
 
-        const post = await queryPostRepo.getById(postId)
+        const post = await queryPostRepo.getById(postId,userId!)
         if (!post) {
             return res.sendStatus(404);
         }
 
-        let myStatus = 'None';
-        if (userId) {
-            const userLike = await LikeModelPosts.findOne({postId, userId});
-            if (userLike) {
-                myStatus = userLike.status;
-            }
-        }
-
-        const responsePost = {
-            id: post.id,
-            title: post.title,
-            shortDescription: post.shortDescription,
-            content: post.content,
-            blogId: post.blogId,
-            blogName: post.blogName,
-            createdAt: post.createdAt,  //БЫЛО TO iSO STRING
-            extendedLikesInfo: {
-                likesCount: post.extendedLikesInfo.likesCount,
-                dislikesCount: post.extendedLikesInfo.dislikesCount,
-                myStatus: myStatus,
-                newestLikes: []
-            }
-
-        }
-        res.status(200).send(responsePost);
+        res.status(200).send(post);
         return
 
     }

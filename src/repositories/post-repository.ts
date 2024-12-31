@@ -18,7 +18,13 @@ export class PostMapper{
                 likesCount: post.extendedLikesInfo.likesCount,
                 dislikesCount: post.extendedLikesInfo.dislikesCount,
                 myStatus: likeStatus,
-                newestLikes:post.extendedLikesInfo.newestLikes
+                newestLikes: post.extendedLikesInfo.newestLikes.map(n=> {
+                    return {
+                        userId:n.userId,
+                        login:n.login,
+                        addedAt:n.addedAt
+                    }
+                })
             }
 
         }

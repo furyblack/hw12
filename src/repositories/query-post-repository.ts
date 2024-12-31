@@ -7,6 +7,7 @@ import {CommentModel} from "../db/comment-model";
 import {LikeModel, LikeModelPosts, LikeStatusEnum} from "../db/likes-model";
 import {PostMapper} from "./post-repository";
 
+
 export class QueryPostRepository {
 
      async getAll(sortData: postSortData): Promise<PaginationOutputType<PostOutputType[]>> {
@@ -101,18 +102,24 @@ export class QueryPostRepository {
     //get post by id
      async getById(id: string, userId?:string): Promise<PostOutputType | null> {
          console.log('id',id)
-         console.log('userId',userId)
+         console.log('userId from query repo',userId)
         const post: PostMongoDbType | null = await PostModel.findOne({ _id: new ObjectId(id) }); //, userId вырезал
         if (!post) {
             return null;
         }
          let likeStatus = LikeStatusEnum.NONE
+
          if(userId){
              const  status  = await LikeModelPosts.findOne({postId:id, userId:userId})
              if(status){
                  likeStatus = status.status
              }
          }
+
+
+
+
+
         return PostMapper.toDto(post, likeStatus);
     }
 }

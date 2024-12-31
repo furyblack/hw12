@@ -22,7 +22,7 @@ export type likeType = {
 export const LikeModel  = mongoose.model<likeType>('CommentsLikes', likeSchema )
 
 
-//likes for posts
+//СХЕМА И МОДЕЛЬ ДЛЯ ЛАЙКОВ И ДИЗЛАЙКОВ НА ПОСТЫ
 export const likeSchemaPost  = new mongoose.Schema({
     postId: {type: mongoose.Schema.Types.ObjectId, ref:'posts', required:true},
     userId: {type:String, required:true},

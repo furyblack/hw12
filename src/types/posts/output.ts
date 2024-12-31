@@ -13,14 +13,14 @@ export type PostOutputType = {
         likesCount: number,
         dislikesCount: number,
         myStatus:LikeStatusEnum,
-        newestLikes:
-            {
-                addedAt: string,
-                userId: string,
-                login: string,
-            }[]
-
+        newestLikes:Omit<newestLikesType,"_id">[]
     }
+}
+export type newestLikesType ={
+    "_id":ObjectId,
+    "addedAt": string,
+    "userId": string,
+    "login": string,
 }
 
 export type PostMongoDbType =  {
@@ -34,7 +34,7 @@ export type PostMongoDbType =  {
     extendedLikesInfo: {
         likesCount: number,
         dislikesCount: number,
-        newestLikes: []
+        newestLikes: newestLikesType[]
     }
 }
 export type PostCreateType =  {
