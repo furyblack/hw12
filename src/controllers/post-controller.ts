@@ -28,10 +28,8 @@ export class PostController {
     }
 
     async getPostById(req: Request, res: Response) {
-        // const postId = await queryPostRepo.getById(req.params.id);
         const postId = req.params.id
         const userId = req.userDto ? req.userDto._id.toString() : null;
-        console.log('uuserID on c',userId)
 
         const post = await queryPostRepo.getById(postId,userId!)
         if (!post) {

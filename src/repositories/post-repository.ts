@@ -20,9 +20,9 @@ export class PostMapper{
                 myStatus: likeStatus,
                 newestLikes: post.extendedLikesInfo.newestLikes.map(n=> {
                     return {
+                        addedAt:n.addedAt,
                         userId:n.userId,
-                        login:n.login,
-                        addedAt:n.addedAt
+                        login:n.login
                     }
                 })
             }
