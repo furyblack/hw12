@@ -22,8 +22,9 @@ export class PostController {
     }
 
     async getPosts(req: RequestWithQuery<postQuerySortData>, res: Response<PaginationOutputType<PostOutputType[]>>) {
+        const userId = req.userDto ? req.userDto._id.toString() : null;
         const paginationData = paginator(req.query)
-        const posts = await queryPostRepo.getAll(paginationData)
+        const posts = await queryPostRepo.getAll(paginationData, userId)
         res.send(posts)
     }
 

@@ -3,20 +3,21 @@ import {authMiddleware} from "../middlewares/auth/auth-middleware";
 import {blogValidation} from "../validators/blog-validators";
 import {postForBlogValidation} from "../validators/post-validators";
 import {blogController} from "../composition-root";
+import {extractUserIdFromToken} from "../middlewares/comments/comments-middleware";
 
 
 export const blogRoute = Router({});
 
 
-blogRoute.get('/', blogController.getBlogs)
+blogRoute.get('/',  blogController.getBlogs)
 
 blogRoute.get('/:id', blogController.getBlogById)
 
-blogRoute.get('/:blogId/posts', blogController.getPostsForBlog)
+blogRoute.get('/:blogId/posts', extractUserIdFromToken, blogController.getPostsForBlog)
 
 blogRoute.post('/', authMiddleware, blogValidation(), blogController.createBlog.bind(blogController))
 
-blogRoute.post('/:blogId/posts', authMiddleware, postForBlogValidation(), blogController.createPostForBlog.bind(blogController))
+blogRoute.post('/:blogId/posts', authMiddleware, postForBlogValidation(),  blogController.createPostForBlog.bind(blogController))
 
 blogRoute.put('/:id', authMiddleware, blogValidation(), blogController.updateBlog.bind(blogController))
 

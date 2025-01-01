@@ -44,13 +44,14 @@ export class BlogController {
     }, blogQuerySortData>, res: Response) {
         const blogId = req.params.blogId; // Используйем req.params.blogId для получения значения blogId
         const paginationData = paginator(req.query)
+        const userId = req.userDto ? req.userDto._id.toString() : null;
 
         if (!ObjectId.isValid(blogId)) {
             res.sendStatus(404);
             return;
         }
         try {
-            const posts = await queryBlogRepo.getAllPostsForBlog(blogId, paginationData);
+            const posts = await queryBlogRepo.getAllPostsForBlog(blogId, paginationData, userId);
             if (posts!.items.length > 0) {
                 res.status(200).send(posts);
             } else {
