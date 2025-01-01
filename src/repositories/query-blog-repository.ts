@@ -16,7 +16,6 @@ export class QueryBlogRepository {
         return BlogMapper.toDto(blog)
     }
 
-
      async getAllPostsForBlog(blogId: string,sortData: blogSortData, userId: string | null): Promise<PaginationOutputType<PostOutputType[]>> {
         const {pageSize, pageNumber, sortBy, sortDirection} = sortData
         const search = {blogId: blogId}
@@ -90,14 +89,12 @@ export class QueryBlogRepository {
          });
 
         return {
-
             pagesCount: Math.ceil(totalCount / pageSize),
             page: pageNumber,
             pageSize: pageSize,
             totalCount,
             items: responsePosts
         }
-
     }
 
      async getAll(sortData: blogSortData): Promise<PaginationOutputType<BlogOutputType[]>> {
@@ -115,14 +112,12 @@ export class QueryBlogRepository {
         const totalCount = await BlogModel.countDocuments(search)
 
         return {
-
             pagesCount: Math.ceil(totalCount / pageSize),
             page: pageNumber,
             pageSize: pageSize,
             totalCount,
             items: blog.map(b => BlogMapper.toDto(b))
         }
-
     }
 }
 export const queryBlogRepo = new QueryBlogRepository()

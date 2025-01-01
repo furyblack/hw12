@@ -89,7 +89,6 @@ export class QueryPostRepository {
             pageSize: pageSize,
             totalCount,
             items:responsePosts
-            //items: post.map((p) => PostMapper.toDto(p))
         };
     }
 
@@ -159,7 +158,6 @@ export class QueryPostRepository {
         };
     }
 
-
     //get post by id
      async getById(id: string, userId?:string): Promise<PostOutputType | null> {
          console.log('id',id)
@@ -176,11 +174,6 @@ export class QueryPostRepository {
                  likeStatus = status.status
              }
          }
-
-
-
-
-
         return PostMapper.toDto(post, likeStatus);
     }
 }

@@ -1,4 +1,3 @@
-import {CreateNewBlogType} from "./input";
 
 export type BlogOutputType =  {
     "id": string,
@@ -8,8 +7,6 @@ export type BlogOutputType =  {
     "isMembership": boolean,
     "createdAt": string
 }
-
-
 
 export type blogSortData = {
     pageSize: number,

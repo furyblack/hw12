@@ -39,7 +39,6 @@ export class PostController {
 
         res.status(200).send(post);
         return
-
     }
 
     async getCommentsForPost(req: RequestWithQueryAndParams<{
@@ -135,7 +134,6 @@ export class PostController {
             if (!['None', 'Like', 'Dislike'].includes(likeStatus)) {
                 return res.status(400).send({errorsMessages: [{message: 'Invalid like status', field: 'likeStatus'}]})
             }
-
 
              try {
                 const postsExists = await PostModel.findById(id)

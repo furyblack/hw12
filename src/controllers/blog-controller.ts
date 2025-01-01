@@ -83,7 +83,6 @@ export class BlogController {
         if (!newPost) return res.sendStatus(404)
         res.status(201).send(newPost);
         return
-
     }
 
     async updateBlog(req: Request, res: Response) {
@@ -117,6 +116,5 @@ export class BlogController {
         } else {
             res.sendStatus(404)
         }
-
     }
 }
