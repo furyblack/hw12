@@ -1,4 +1,3 @@
-
 export type BlogOutputType =  {
     "id": string,
     "name": string,
