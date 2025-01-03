@@ -6,7 +6,9 @@ import {PaginationOutputType} from "../types/blogs/output";
 import {UserOutputType} from "../types/users/outputUserType";
 import {userPaginator} from "../types/paginator/pagination";
 import {queryUserRepo} from "../repositories/query-user-repository";
+import {injectable} from "inversify";
 
+@injectable()
 export class UserController {
     constructor(protected userService: UsersService) {
     }

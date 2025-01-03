@@ -6,8 +6,9 @@ import {UserAccountDBType} from "../types/users/inputUsersType";
 import {nodemailerService} from "./nodemailer-service";
 import {v4 as uuidv4} from "uuid";
 import {add} from 'date-fns';
+import {injectable} from "inversify";
 
-
+@injectable()
 export class UsersService {
     constructor(protected userRepo: UsersRepository) {}
     async createUser(login: string, email: string, password: string): Promise<string> {

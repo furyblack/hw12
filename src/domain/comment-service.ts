@@ -2,6 +2,7 @@ import {CommentRepository} from "../repositories/comment-repository";
 import {LikeModel, LikeStatusEnum} from "../db/likes-model";
 import {CommentDb, CommentModel} from "../db/comment-model";
 import {PostRepository} from "../repositories/post-repository";
+import {injectable} from "inversify";
 
 export type CreateCommentServiceType ={
     postId:string,
@@ -9,6 +10,7 @@ export type CreateCommentServiceType ={
     userId:string,
     userLogin:string,
 }
+@injectable()
 export class CommentService{
     constructor(protected commentRepo:CommentRepository, protected postRepo:PostRepository) {
     }

@@ -3,7 +3,8 @@ import {PostMongoDbType, PostOutputType} from "../types/posts/output";
 import {ObjectId, WithId} from "mongodb";
 import {PostDb, PostModel} from "../db/posts-model";
 import {LikeStatusEnum} from "../db/likes-model";
-
+import {injectable} from "inversify";
+@injectable()
 export class PostMapper{
     static toDto(post:PostMongoDbType, likeStatus:LikeStatusEnum=LikeStatusEnum.NONE):PostOutputType{
         return {
@@ -30,7 +31,7 @@ export class PostMapper{
         }
     }
 }
-
+@injectable()
 export class PostRepository{
      async createPost(newPost: PostDb): Promise<PostOutputType | null>{
          const newPostToDb = new PostModel(newPost)

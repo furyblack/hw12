@@ -3,6 +3,7 @@ import {ObjectId, SortDirection, WithId} from "mongodb";
 import {UserOutputType, userSortData} from "../types/users/outputUserType";
 import {UserAccountDBType} from "../types/users/inputUsersType";
 import {UserModel} from "../db/user-model";
+import {injectable} from "inversify";
 
 export class UserMapper {
     static toDto(user: WithId<UserAccountDBType>): UserOutputType {
@@ -14,7 +15,7 @@ export class UserMapper {
         }
     }
 }
-
+@injectable()
 export class UserQueryRepository {
      async getAll(sortData: userSortData): Promise<PaginationOutputType<UserOutputType[]>> {
         let {pageSize, pageNumber, sortBy, sortDirection } = sortData

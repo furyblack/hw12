@@ -13,8 +13,9 @@ import {CreateNewCommentType} from "../types/comment/input-comment-type";
 import {CommentOutputType} from "../types/comment/output-comment-type";
 import {queryCommentRepo} from "../repositories/query-comment-repository";
 import {PostModel} from "../db/posts-model";
+import {injectable} from "inversify";
 
-
+@injectable()
 export class PostController {
 
     constructor(protected postService: PostService, protected postRepo: PostRepository, protected commentService: CommentService) {

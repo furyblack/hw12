@@ -5,7 +5,8 @@ import {PostOutputType} from "../types/posts/output";
 import {BlogDb, BlogModel} from "../db/blogs-model";
 import {PostModel} from "../db/posts-model";
 import {LikeModelPosts, LikeStatusEnum} from "../db/likes-model";
-
+import {injectable} from "inversify";
+@injectable()
 export class QueryBlogRepository {
 
      async getById(id: string): Promise<BlogOutputType | null> {

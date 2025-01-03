@@ -7,8 +7,9 @@ import {queryPostRepo} from "../repositories/query-post-repository";
 import {PostRepository} from "../repositories/post-repository";
 import {LikeModelPosts, LikeStatusEnum} from "../db/likes-model";
 import {UsersRepository} from "../repositories/users-repository";
+import {injectable} from "inversify";
 
-
+@injectable()
 export class PostService{
     constructor(protected postRepo:PostRepository, protected userRepo:UsersRepository) {
     }

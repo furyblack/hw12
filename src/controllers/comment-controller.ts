@@ -5,7 +5,9 @@ import {queryCommentRepo} from "../repositories/query-comment-repository";
 import {LikeModel} from "../db/likes-model";
 import {UpdateCommentType} from "../types/comment/input-comment-type";
 import {CommentModel} from "../db/comment-model";
+import {injectable} from "inversify";
 
+@injectable()
 export class CommentController {
 
 

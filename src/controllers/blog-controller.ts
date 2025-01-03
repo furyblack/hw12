@@ -11,7 +11,9 @@ import {ObjectId} from "mongodb";
 import {CreateNewPostForBlogType} from "../types/posts/input";
 import {PostOutputType} from "../types/posts/output";
 import {blogService} from "../composition-root";
+import {injectable} from "inversify";
 
+@injectable()
 export class BlogController {
     constructor(protected blogService: BlogsService,
                 protected blogRepo: BlogRepository,

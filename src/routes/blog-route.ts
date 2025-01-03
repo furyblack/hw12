@@ -2,10 +2,12 @@ import {Router} from "express";
 import {authMiddleware} from "../middlewares/auth/auth-middleware";
 import {blogValidation} from "../validators/blog-validators";
 import {postForBlogValidation} from "../validators/post-validators";
-import {blogController} from "../composition-root";
+import { container} from "../composition-root";
 import {extractUserIdFromToken} from "../middlewares/comments/comments-middleware";
+import {BlogController} from "../controllers/blog-controller";
 
 
+const blogController = container.resolve(BlogController)
 export const blogRoute = Router({});
 
 

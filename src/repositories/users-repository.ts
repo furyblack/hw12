@@ -1,7 +1,8 @@
 import {UserAccountDBType} from "../types/users/inputUsersType";
 import {ObjectId, WithId} from "mongodb";
 import {UserModel} from "../db/user-model";
-
+import {injectable} from "inversify";
+@injectable()
 export class UsersRepository{
 
      async createUser(user: UserAccountDBType): Promise<string> {

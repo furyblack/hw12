@@ -4,6 +4,7 @@ import {UpdateCommentType} from "../types/comment/input-comment-type";
 import {queryCommentRepo} from "./query-comment-repository";
 import {LikeStatusEnum} from "../db/likes-model";
 import {CommentModel, CommentMongoDbType} from "../db/comment-model";
+import {injectable} from "inversify";
 
 export class CommentMapper {
     static toDto(comment: WithId<CommentMongoDbType>, likeStatus:LikeStatusEnum = LikeStatusEnum.NONE): CommentOutputType {
@@ -20,7 +21,7 @@ export class CommentMapper {
         }
     }
 }
-
+@injectable()
 export class CommentRepository {
      async findById(commentId: string):Promise<WithId<CommentMongoDbType> | null>{
 

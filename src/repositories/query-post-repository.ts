@@ -6,8 +6,9 @@ import {PostModel} from "../db/posts-model";
 import {CommentModel} from "../db/comment-model";
 import {LikeModel, LikeModelPosts, LikeStatusEnum} from "../db/likes-model";
 import {PostMapper} from "./post-repository";
+import {injectable} from "inversify";
 
-
+@injectable()
 export class QueryPostRepository {
 
      async getAll(sortData: postSortData, userId: string | null): Promise<PaginationOutputType<PostOutputType[]>> {

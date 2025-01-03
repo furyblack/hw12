@@ -2,6 +2,7 @@ import {UpdateBlogType} from "../types/blogs/input";
 import {BlogOutputType} from "../types/blogs/output";
 import {ObjectId, WithId} from "mongodb";
 import {BlogDb, BlogModel} from "../db/blogs-model";
+import {injectable} from "inversify";
 
 export class BlogMapper {
     static toDto(blog: WithId<BlogDb>): BlogOutputType {
@@ -16,7 +17,7 @@ export class BlogMapper {
         }
     }
 }
-
+@injectable()
 export class BlogRepository {
 
      async createBlog(blog: BlogDb): Promise<string> {

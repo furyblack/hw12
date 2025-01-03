@@ -3,7 +3,8 @@ import {CommentOutputType} from "../types/comment/output-comment-type";
 import {CommentMapper} from "./comment-repository";
 import {CommentModel, CommentMongoDbType} from "../db/comment-model";
 import {LikeModel, LikeStatusEnum} from "../db/likes-model";
-
+import {injectable} from "inversify";
+@injectable()
 export class QueryCommentRepository {
 
      async getById(id: string, userId?:string): Promise<CommentOutputType | null> {
