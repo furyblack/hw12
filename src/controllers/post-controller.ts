@@ -17,7 +17,6 @@ import {injectable} from "inversify";
 
 @injectable()
 export class PostController {
-
     constructor(protected postService: PostService, protected postRepo: PostRepository, protected commentService: CommentService) {
 
     }
