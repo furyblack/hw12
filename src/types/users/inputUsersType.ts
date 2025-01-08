@@ -5,24 +5,6 @@ export type CreateNewUserType= {
     "email": string
 }
 
-// export class UserAccountDBType{
-//     public userAccountType:{
-//         public email: string,
-//         public userName: string,
-//         public passwordHash: string,
-//         public passwordSalt: string,
-//         public createdAt: Date
-//     }
-//     public EmailConfirmationType:{
-//        public isConfirmed : boolean
-//        public confirmationCode : string | null
-//        public expirationDate : Date | null
-//     }
-//     public RecoveryCode:{
-//         public code:string
-//         public expirationDate: Date
-//     }
-// }
 
 export type UserAccountDBType ={
     accountData: UserAccountType,
